@@ -13,9 +13,9 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket(
-            'ws://'
+            'cs4-2024-class3-team5-project://'
             + window.location.host
-            + '/ws/chat/'
+            + '/cs4-2024-class3-team5-project/vote/'
             + roomName
             + '/'
         );
