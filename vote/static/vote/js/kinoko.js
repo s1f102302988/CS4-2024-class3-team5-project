@@ -1,4 +1,4 @@
-const socket = new WebSocket('ws://127.0.0.1:8000/ws/vote/'); 
+const socket = new WebSocket('ws:http://127.0.0.1:8000/kinokotakenoko/'); 
 
 const form = document.querySelector('form');
 const radioButtons = document.querySelectorAll('input[name="item"]');
