@@ -1,0 +1,126 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #f6f9fc, #eaf3ff);
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2b4e72;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  p.lead {
+    font-size: 1.3rem;
+    color: #555;
+  }
+  
+  form {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 500px;
+    margin: 20px auto;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .form-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+  }
+  
+  .form-check-input {
+    display: none;
+  }
+  
+  .form-check-label {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border: 2px solid #d3e3f2;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #4a6f91;
+    background: #f7f9fc;
+  }
+  
+  .form-check-input:checked + .form-check-label {
+    background: linear-gradient(to right, #4a6f91, #6b9abe);
+    color: #fff;
+    border-color: #4a6f91;
+    box-shadow: 0 4px 10px rgba(74, 111, 145, 0.3);
+  }
+  
+  .form-check-label:hover {
+    background: #e3f0ff;
+    border-color: #6b9abe;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(to right, #4a6f91, #6b9abe);
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    padding: 10px 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(74, 111, 145, 0.2);
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(to right, #3b5e7f, #5a84b3);
+    box-shadow: 0 6px 15px rgba(74, 111, 145, 0.3);
+    transform: translateY(-3px);
+  }
+  
+  .link {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    color: #4a6f91;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .link:hover {
+    color: #6b9abe;
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2rem;
+    }
+  
+    form {
+      padding: 20px;
+    }
+  
+    .form-check-label {
+      font-size: 1rem;
+      padding: 8px 15px;
+    }
+  
+    .btn-primary {
+      font-size: 1rem;
+      padding: 8px 20px;
+    }
+  }
+  
+  
