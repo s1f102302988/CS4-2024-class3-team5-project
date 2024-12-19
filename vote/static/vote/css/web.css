@@ -74,19 +74,16 @@ header p {
     transition: all 0.3s ease;
 }
 
+.btn-choice a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .btn-choice:hover {
     background-color: #4CAF50;
     color: white;
 }
 
-a {
-    display: inline-block;
-    margin-top: 20px;
-    text-decoration: none;
-    color: #4CAF50;
-    font-size: 1rem;
-}
-
-a:hover {
-    text-decoration: underline;
+.btn-choice a:hover {
+    color: white;
 }

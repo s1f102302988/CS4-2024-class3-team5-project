@@ -18,26 +18,23 @@
             <h2>現在の議題</h2>
             <div class="topic">
                 <h3>きのこの山 &#x1f344; vs たけのこの里 &#x1f38d;</h3>
-                <a href="{% url 'kinokotakenoko' %}">投票ページはこちら！</a>
                 <div class="choices">
-                    <button class="btn-choice" id="kinoko">きのこの山</button>
-                    <button class="btn-choice" id="takenoko">たけのこの里</button>
+                    <button class="btn-choice" id="kinoko"><a href="{% url 'kinokotakenoko' %}">きのこの山</a></button>
+                    <button class="btn-choice" id="takenoko"><a href="{% url 'kinokotakenoko' %}">たけのこの里</a></button>
                 </div>
             </div>
             <div class="topic">
                 <h3>愛  &#x1F493;vs 金 &#x1F4B0;</h3>
-                <a href="{% url 'loveormoney' %}">投票ページはこちら！</a>
                 <div class="choices">
-                    <button class="btn-choice" id="love">愛</button>
-                    <button class="btn-choice" id="money">金</button>
+                    <button class="btn-choice" id="love"><a href="{% url 'loveormoney' %}">愛</a></button>
+                    <button class="btn-choice" id="money"><a href="{% url 'loveormoney' %}">金</a></button>
                 </div>
             </div>
             <div class="topic">
                 <h3>トロッコ問題</h3>
-                <a href="{% url 'torokko' %}">投票ページはこちら！</a>
                 <div class="choices">
-                    <button class="btn-choice" id="save1">1人を助ける</button>
-                    <button class="btn-choice" id="save5">5人を助ける</button>
+                    <button class="btn-choice" id="save1"><a href="{% url 'torokko' %}">1人を助ける</a></button>
+                    <button class="btn-choice" id="save5"><a href="{% url 'torokko' %}">5人を助ける</a></button>
                 </div>
             </div>
         </section>
