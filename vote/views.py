@@ -13,3 +13,6 @@ def loveormoney(request):
 
 def torokko(request):
     return render(request, "vote/torokko.html")
+
+def room(request):
+    return render(request, "vote/room.html")
