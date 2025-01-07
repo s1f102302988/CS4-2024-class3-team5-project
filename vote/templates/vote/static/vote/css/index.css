@@ -1,0 +1,46 @@
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    text-align: center;
+    background-color: #ab7979;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+h1{
+  font-family: "DotGothic16", serif;
+}
+h2{
+    font-family: "DotGothic16", serif;
+}
+h3{
+    font-family: "DotGothic16", serif;
+}
+p{
+    font-family: "DotGothic16", serif;
+}
+
+.kinokotakenoko img{
+    width: 180px;
+}
+
+.loveormoney{
+    width: 30px
+}
+
+.background-image-container {
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:#f7f6f6;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: background-image 1s ease-in-out;
+}
