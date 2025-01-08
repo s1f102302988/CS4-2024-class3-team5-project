@@ -44,3 +44,31 @@ class VoteConsumer(AsyncWebsocketConsumer):
             'takenoko': event['takenoko'],
         }))
 
+    def handle_vote_message(self, message):
+        vote_type = message.get('type')
+        vote_item = message.get('message')
+
+        if vote_type == 'kinokotakenoko':
+            # きのこ vs たけのこ 投票処理
+            self.update_kinoko_takenoko_votes(vote_item)
+        elif vote_type == 'loveormoney':
+            # 愛 vs 金 投票処理
+            self.update_love_money_votes(vote_item)
+        elif vote_type == 'trolleyproblem':
+            # トロッコ問題 投票処理
+            self.update_trolley_problem_votes(vote_item)
+
+    def update_kinoko_takenoko_votes(self, vote_item):
+        # 投票の更新処理を記述
+        pass
+
+    def update_love_money_votes(self, vote_item):
+        # 投票の更新処理を記述
+        pass
+
+    def update_trolley_problem_votes(self, vote_item):
+        # 投票の更新処理を記述
+        pass
+
+
+

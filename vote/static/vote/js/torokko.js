@@ -50,12 +50,16 @@ chatSocket.onerror = function (error) {
 document.querySelector('#vote-button').onclick = function () {
   const selectedItem = document.querySelector('input[name="item"]:checked');
   if (selectedItem) {
-    console.log('選択された項目:', selectedItem.value);
-    chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));
+    const voteType = 'torokko'; // ここを投票種別に応じて変更
+    chatSocket.send(JSON.stringify({ 
+      'type': voteType, 
+      'message': selectedItem.value 
+    }));
   } else {
     alert('項目を選択してください！');
   }
 };
+
 
 if (chatSocket.readyState === WebSocket.OPEN) {
   chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));

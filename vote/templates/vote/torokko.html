@@ -42,10 +42,10 @@
   <div class="mx-5 p-3">
     <h2>投票結果</h2>
     <div class="progress mb-3">
-      <div id="kinoko-bar" class="progress-bar bg-success vote-bar" role="progressbar" style="width: 50%">きのこ: 0票</div>
+      <div id="kinoko-bar" class="progress-bar bg-success vote-bar" role="progressbar" style="width: 50%">トロッコを切り替えずに5人を見殺し: 0票</div>
     </div>
     <div class="progress">
-      <div id="takenoko-bar" class="progress-bar bg-warning vote-bar" role="progressbar" style="width: 50%">たけのこ: 0票</div>
+      <div id="takenoko-bar" class="progress-bar bg-warning vote-bar" role="progressbar" style="width: 50%">トロッコを切り替えて一人を殺す: 0票</div>
     </div>
   </div>
 </main>
@@ -73,10 +73,10 @@
       const takenokoPercentage = total ? (data.takenoko / total) * 100 : 50;
 
       document.querySelector('#kinoko-bar').style.width = kinokoPercentage + '%';
-      document.querySelector('#kinoko-bar').textContent = `きのこ: ${data.kinoko}票`;
+      document.querySelector('#kinoko-bar').textContent = `トロッコを切り替えずに5人を見殺し: ${data.kinoko}票`;
 
       document.querySelector('#takenoko-bar').style.width = takenokoPercentage + '%';
-      document.querySelector('#takenoko-bar').textContent = `たけのこ: ${data.takenoko}票`;
+      document.querySelector('#takenoko-bar').textContent = `トロッコを切り替えて一人を殺す: ${data.takenoko}票`;
     }
   };
 
