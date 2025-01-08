@@ -1,68 +1,25 @@
-const socket = new WebSocket('ws:http://127.0.0.1:8000/kinokotakenoko/'); 
+document.querySelector('.btn-primary').onclick = function (e) {
+  e.preventDefault(); // フォームのデフォルト送信を防ぐ
 
-const form = document.querySelector('form');
-const radioButtons = document.querySelectorAll('input[name="item"]');
-const submitButton = document.querySelector('button[type="submit"]');
-
-const resultContainer = document.createElement('div');
-resultContainer.id = "vote-results";
-resultContainer.style.marginTop = "30px";
-resultContainer.style.fontSize = "1.2rem";
-form.parentElement.appendChild(resultContainer);
-
-socket.onopen = function () {
-  console.log("WebSocket接続が確立されました。");
-};
-
-socket.onmessage = function (event) {
-  const data = JSON.parse(event.data);
-
-  updateResults(data);
-};
-
-socket.onerror = function (error) {
-  console.error("WebSocketエラー: ", error);
-};
-
-form.addEventListener('submit', function (e) {
-  e.preventDefault(); 
-
-  let selectedValue = null;
-  radioButtons.forEach((radio) => {
-    if (radio.checked) {
-      selectedValue = radio.value;
-    }
-  });
-
-  if (selectedValue) {
-    socket.send(JSON.stringify({
-      action: 'vote',
-      item: selectedValue
-    }));
-
-    submitButton.disabled = true;
-    submitButton.innerText = "投票中...";
-    setTimeout(() => {
-      submitButton.disabled = false;
-      submitButton.innerText = "投票";
-    }, 2000);
-  } else {
-    alert("どちらかに投票してください！");
+  // 選択されたラジオボタンの値を取得
+  const selectedItem = document.querySelector('input[name="item"]:checked');
+  if (!selectedItem) {
+      alert("投票対象を選択してください！");
+      return;
   }
-});
 
-function updateResults(data) {
-  const kinokoCount = data.kinoko || 0;
-  const takenokoCount = data.takenoko || 0;
-  const total = kinokoCount + takenokoCount;
+  // 投票データをWebSocket経由で送信
+  const vote = selectedItem.value; // "kinoko" または "takenoko"
+  chatSocket.send(JSON.stringify({ message: vote }));
 
-  const kinokoPercent = total ? ((kinokoCount / total) * 100).toFixed(1) : 0;
-  const takenokoPercent = total ? ((takenokoCount / total) * 100).toFixed(1) : 0;
+  // UIをリセット（必要に応じて）
+  alert(`"${vote}" に投票しました！`);
+  document.querySelector('form').reset();
+};
 
-  resultContainer.innerHTML = `
-    <h3>現在の投票結果</h3>
-    <p>🍄 きのこ: ${kinokoCount} 票 (${kinokoPercent}%)</p>
-    <p>🎋 たけのこ: ${takenokoCount} 票 (${takenokoPercent}%)</p>
-    <p>合計投票数: ${total} 票</p>
-  `;
-}
+chatSocket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
+
+  // 投票データを更新
+  document.querySelector('#chat-log').value += `きのこ: ${data.kinoko}票, たけのこ: ${data.takenoko}票\n`;
+};
