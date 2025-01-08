@@ -1,25 +1,65 @@
-document.querySelector('.btn-primary').onclick = function (e) {
-  e.preventDefault(); // フォームのデフォルト送信を防ぐ
+const chatSocket = new WebSocket('ws://localhost:8000/ws/vote/kinokotakenoko/');
 
-  // 選択されたラジオボタンの値を取得
+
+// 投票ボタンが押された時の処理
+const voteButton = document.querySelector('#vote-button');
+voteButton.onclick = function () {
   const selectedItem = document.querySelector('input[name="item"]:checked');
-  if (!selectedItem) {
-      alert("投票対象を選択してください！");
-      return;
+  if (selectedItem) {
+    // 選択された項目をサーバーに送信
+    chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));
+  } else {
+    alert('項目を選択してください！');
   }
-
-  // 投票データをWebSocket経由で送信
-  const vote = selectedItem.value; // "kinoko" または "takenoko"
-  chatSocket.send(JSON.stringify({ message: vote }));
-
-  // UIをリセット（必要に応じて）
-  alert(`"${vote}" に投票しました！`);
-  document.querySelector('form').reset();
 };
 
+// サーバーからメッセージを受け取った時の処理
 chatSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);
 
-  // 投票データを更新
-  document.querySelector('#chat-log').value += `きのこ: ${data.kinoko}票, たけのこ: ${data.takenoko}票\n`;
+  if (data.kinoko !== undefined && data.takenoko !== undefined) {
+    const total = data.kinoko + data.takenoko;
+
+    // 投票数から割合を計算
+    const kinokoPercentage = total ? (data.kinoko / total) * 100 : 50;
+    const takenokoPercentage = total ? (data.takenoko / total) * 100 : 50;
+
+    // 進捗バーの更新
+    const kinokoBar = document.querySelector('#kinoko-bar');
+    kinokoBar.style.width = kinokoPercentage + '%';
+    kinokoBar.textContent = `きのこ: ${data.kinoko}票`;
+
+    const takenokoBar = document.querySelector('#takenoko-bar');
+    takenokoBar.style.width = takenokoPercentage + '%';
+    takenokoBar.textContent = `たけのこ: ${data.takenoko}票`;
+  }
 };
+
+// WebSocketが閉じられた時の処理
+chatSocket.onclose = function () {
+  console.error('WebSocketが予期せず閉じられました');
+};
+
+chatSocket.onopen = function () {
+  console.log('WebSocketが接続されました');
+};
+
+chatSocket.onerror = function (error) {
+  console.error('WebSocketエラー:', error);
+};
+
+document.querySelector('#vote-button').onclick = function () {
+  const selectedItem = document.querySelector('input[name="item"]:checked');
+  if (selectedItem) {
+    console.log('選択された項目:', selectedItem.value);
+    chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));
+  } else {
+    alert('項目を選択してください！');
+  }
+};
+
+if (chatSocket.readyState === WebSocket.OPEN) {
+  chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));
+} else {
+  console.error('WebSocketが接続されていません');
+}
