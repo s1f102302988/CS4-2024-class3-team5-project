@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="ja">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Kaisei+HarunoUmi&display=swap" rel="stylesheet">
 <head>
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>二極化論争掲示板</title>
-    <link rel="stylesheet" href="static/vote/css/index.css">
-    <script src="static/vote/js/index.js"></script>
+    <link rel="stylesheet" href="{% static 'vote/css/index.css' %}">
 </head>
 <body>
     <header>
@@ -18,35 +14,30 @@
         <p>気になる議題に意見を投票しよう！</p>
     </header>
     <main>
-        <div class="background-image-container background">
-            <div class="vertical-text" id="section0">
+        <section class="topics">
+            <h2>現在の議題</h2>
+            <div class="topic">
+                <h3>きのこの山 &#x1f344; vs たけのこの里 &#x1f38d;</h3>
+                <div class="choices">
+                    <button class="btn-choice" id="kinoko"><a href="{% url 'kinokotakenoko' %}">きのこの山</a></button>
+                    <button class="btn-choice" id="takenoko"><a href="{% url 'kinokotakenoko' %}">たけのこの里</a></button>
+                </div>
             </div>
-            <section class="topics">
-                <h2>現在の議題</h2>
-                <div class="topic kinokotakenoko">
-                    <h3>きのこの山 &#x1f344; vs たけのこの里 &#x1f38d;</h3>
-                    <div class="choices">
-                        <a href="kinokotakenoko.html"><img src="https://www.tca.ac.jp/creative/information/creative-koshien/vol24/images/vol24_kinokonoyama.png"></a>
-                        <a href="kinokotakenoko.html"><img src="https://m.media-amazon.com/images/I/7108I3GwmnL._AC_UF894,1000_QL80_.jpg"></a>
-                    </div>
+            <div class="topic">
+                <h3>愛  &#x1F493;vs 金 &#x1F4B0;</h3>
+                <div class="choices">
+                    <button class="btn-choice" id="love"><a href="{% url 'loveormoney' %}">愛</a></button>
+                    <button class="btn-choice" id="money"><a href="{% url 'loveormoney' %}">金</a></button>
                 </div>
-                <div class="topic kinokotakenoko">
-                    <h3>愛  &#x1F493;vs 金 &#x1F4B0;</h3>
-                    <div class="choices">
-                        <a href="loveormoney.html"><img src="https://www.santendesign.com/wp-content/uploads/2019/10/%E6%84%9B-%E6%BC%A2%E5%AD%97%E3%82%A4%E3%83%A9%E3%82%B9%E3%83%88-%E7%AD%86%E6%96%87%E5%AD%97-%E7%84%A1%E6%96%99%E3%83%95%E3%83%AA%E3%83%BC%E7%B4%A0%E6%9D%90-1-1.jpg"></a>
-                        <a href="loveormoney.html"><img src="https://pictarts.com/15/material/02-illustrations/0178-3d-image-m.png"></a>
-                    </div>
+            </div>
+            <div class="topic">
+                <h3>トロッコ問題</h3>
+                <div class="choices">
+                    <button class="btn-choice" id="save1"><a href="{% url 'torokko' %}">1人を助ける</a></button>
+                    <button class="btn-choice" id="save5"><a href="{% url 'torokko' %}">5人を助ける</a></button>
                 </div>
-                <div class="topic">
-                    <h3>トロッコ問題</h3>
-                    <div class="choices">
-                        <button class="btn-choice" id="save1"><a href="torokko.html">1人を助ける</a></button>
-                        <button class="btn-choice" id="save5"><a href="torokko.html">5人を助ける</a></button>
-                    </div>
-                </div>
-            </section>
-        </div>
-        
+            </div>
+        </section>
     </main>
 
 </body>
