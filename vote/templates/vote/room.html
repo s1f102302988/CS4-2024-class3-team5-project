@@ -10,6 +10,7 @@
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
     <script id="room-name" type="application/json">"example-room"</script>
+    
     <script>
 
     const chatSocket = new WebSocket(
