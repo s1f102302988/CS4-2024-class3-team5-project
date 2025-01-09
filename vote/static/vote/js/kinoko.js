@@ -1,68 +1,69 @@
-const socket = new WebSocket('ws:http://127.0.0.1:8000/kinokotakenoko/'); 
+const chatSocket = new WebSocket('ws://localhost:8000/ws/vote/kinokotakenoko/');
 
-const form = document.querySelector('form');
-const radioButtons = document.querySelectorAll('input[name="item"]');
-const submitButton = document.querySelector('button[type="submit"]');
 
-const resultContainer = document.createElement('div');
-resultContainer.id = "vote-results";
-resultContainer.style.marginTop = "30px";
-resultContainer.style.fontSize = "1.2rem";
-form.parentElement.appendChild(resultContainer);
-
-socket.onopen = function () {
-  console.log("WebSocket接続が確立されました。");
-};
-
-socket.onmessage = function (event) {
-  const data = JSON.parse(event.data);
-
-  updateResults(data);
-};
-
-socket.onerror = function (error) {
-  console.error("WebSocketエラー: ", error);
-};
-
-form.addEventListener('submit', function (e) {
-  e.preventDefault(); 
-
-  let selectedValue = null;
-  radioButtons.forEach((radio) => {
-    if (radio.checked) {
-      selectedValue = radio.value;
-    }
-  });
-
-  if (selectedValue) {
-    socket.send(JSON.stringify({
-      action: 'vote',
-      item: selectedValue
-    }));
-
-    submitButton.disabled = true;
-    submitButton.innerText = "投票中...";
-    setTimeout(() => {
-      submitButton.disabled = false;
-      submitButton.innerText = "投票";
-    }, 2000);
+// 投票ボタンが押された時の処理
+const voteButton = document.querySelector('#vote-button');
+voteButton.onclick = function () {
+  const selectedItem = document.querySelector('input[name="item"]:checked');
+  if (selectedItem) {
+    // 選択された項目をサーバーに送信
+    chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));
   } else {
-    alert("どちらかに投票してください！");
+    alert('項目を選択してください！');
   }
-});
+};
 
-function updateResults(data) {
-  const kinokoCount = data.kinoko || 0;
-  const takenokoCount = data.takenoko || 0;
-  const total = kinokoCount + takenokoCount;
+// サーバーからメッセージを受け取った時の処理
+chatSocket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
 
-  const kinokoPercent = total ? ((kinokoCount / total) * 100).toFixed(1) : 0;
-  const takenokoPercent = total ? ((takenokoCount / total) * 100).toFixed(1) : 0;
+  if (data.kinoko !== undefined && data.takenoko !== undefined) {
+    const total = data.kinoko + data.takenoko;
 
-  resultContainer.innerHTML = `
-    <h3>現在の投票結果</h3>
-    <p>🍄 きのこ: ${kinokoCount} 票 (${kinokoPercent}%)</p>
-    <p>🎋 たけのこ: ${takenokoCount} 票 (${takenokoPercent}%)</p>
-    <p>合計投票数: ${total} 票</p>
-  `;
+    // 投票数から割合を計算
+    const kinokoPercentage = total ? (data.kinoko / total) * 100 : 50;
+    const takenokoPercentage = total ? (data.takenoko / total) * 100 : 50;
+
+    // 進捗バーの更新
+    const kinokoBar = document.querySelector('#kinoko-bar');
+    kinokoBar.style.width = kinokoPercentage + '%';
+    kinokoBar.textContent = `きのこ: ${data.kinoko}票`;
+
+    const takenokoBar = document.querySelector('#takenoko-bar');
+    takenokoBar.style.width = takenokoPercentage + '%';
+    takenokoBar.textContent = `たけのこ: ${data.takenoko}票`;
+  }
+};
+
+// WebSocketが閉じられた時の処理
+chatSocket.onclose = function () {
+  console.error('WebSocketが予期せず閉じられました');
+};
+
+chatSocket.onopen = function () {
+  console.log('WebSocketが接続されました');
+};
+
+chatSocket.onerror = function (error) {
+  console.error('WebSocketエラー:', error);
+};
+
+document.querySelector('#vote-button').onclick = function () {
+  const selectedItem = document.querySelector('input[name="item"]:checked');
+  if (selectedItem) {
+    const voteType = 'kinokotakenoko'; // ここを投票種別に応じて変更
+    chatSocket.send(JSON.stringify({ 
+      'type': voteType, 
+      'message': selectedItem.value 
+    }));
+  } else {
+    alert('項目を選択してください！');
+  }
+};
+
+
+if (chatSocket.readyState === WebSocket.OPEN) {
+  chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));
+} else {
+  console.error('WebSocketが接続されていません');
 }
