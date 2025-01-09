@@ -27,6 +27,12 @@ class VoteConsumer(AsyncWebsocketConsumer):
                 'takenoko': self.votes['takenoko'],
             }
         )
+    async def chat_message(self, event):
+            message = event['message']
+
+            await self.send(text_data=json.dumps({
+                'message': message
+            }))
 
     async def send_vote_data(self, event):
         await self.send(text_data=json.dumps({
