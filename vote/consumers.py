@@ -1,5 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+from channels.generic.websocket import WebsocketConsumer
 
 class VoteConsumer(AsyncWebsocketConsumer):
     votes = {'kinoko': 0, 'takenoko': 0}
@@ -94,27 +95,15 @@ class TorokkoConsumer(AsyncWebsocketConsumer):
         # クライアントに投票結果を送信
         await self.send(text_data=json.dumps(self.votes))
 
-class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = f'chat_{self.room_name}'
+class ChatConsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
 
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
-        await self.accept()
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        message = data['message']
-    async def chat_message(self, event):
-        message = event['message']
+    def disconnect(self, close_code):
+        pass
 
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json["message"]
+
+        self.send(text_data=json.dumps({"message": message}))
