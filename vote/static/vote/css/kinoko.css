@@ -30,3 +30,28 @@ body {
     font-size: 1rem;
     margin-top: 0;
 }
+
+.topics {
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.topics h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.topic {
+    margin-bottom: 30px;
+}
+
+.topic h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #555;
+}
