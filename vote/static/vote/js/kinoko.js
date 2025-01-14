@@ -1,17 +1,27 @@
 const chatSocket = new WebSocket('ws://localhost:8000/ws/vote/kinokotakenoko/');
 
-
 // 投票ボタンが押された時の処理
 const voteButton = document.querySelector('#vote-button');
 voteButton.onclick = function () {
   const selectedItem = document.querySelector('input[name="item"]:checked');
   if (selectedItem) {
-    // 選択された項目をサーバーに送信
-    chatSocket.send(JSON.stringify({ 'message': selectedItem.value }));
+    chatSocket.send(JSON.stringify({
+      'type': 'kinokotakenoko',
+      'message': selectedItem.value
+    }));
   } else {
     alert('項目を選択してください！');
   }
 };
+
+fetch('/vote/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ item: 'kinoko' }),
+});
+
 
 // サーバーからメッセージを受け取った時の処理
 chatSocket.onmessage = function (e) {

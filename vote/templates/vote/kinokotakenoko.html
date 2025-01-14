@@ -26,7 +26,8 @@
 
     <!-- 投票フォーム -->
     <div class="mx-5 p-3">
-        <form id="vote-form" class="needs-validation">
+        <form id="vote-form" class="needs-validation" action="/vote/" method="post">
+            {% csrf_token %}
             <div class="form-group">
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="item" id="item_kinoko" value="kinoko">
@@ -54,25 +55,47 @@
         </div>
         <button id="vote-kinoko" class="btn btn-success">きのこに投票</button>
     <button id="vote-takenoko" class="btn btn-warning">たけのこに投票</button>
-
-    <script>
-        function updateBars(votes) {
-            $('#kinoko-bar').css('width', votes.kinoko + '%').text('きのこ: ' + votes.kinoko_votes + '票');
-            $('#takenoko-bar').css('width', votes.takenoko + '%').text('たけのこ: ' + votes.takenoko_votes + '票');
+     <script>
+        function sendVote(item) {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+            fetch('/vote/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ item: item }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        // 投票結果を更新
+                        document.querySelector('#kinoko-bar').style.width = data.kinoko + '%';
+                        document.querySelector('#kinoko-bar').textContent = `きのこ: ${data.kinoko_votes}票`;
+    
+                        document.querySelector('#takenoko-bar').style.width = data.takenoko + '%';
+                        document.querySelector('#takenoko-bar').textContent = `たけのこ: ${data.takenoko_votes}票`;
+                    }
+                })
+                .catch(error => {
+                    console.error('エラー:', error);
+                    alert('エラーが発生しました。もう一度お試しください。');
+                });
         }
-
-        $('#vote-kinoko').click(function() {
-            $.post('/vote', { choice: 'kinoko' }, function(data) {
-                updateBars(data);
-            });
+    
+        document.querySelector('#vote-button').addEventListener('click', function () {
+            const selectedItem = document.querySelector('input[name="item"]:checked');
+            if (selectedItem) {
+                sendVote(selectedItem.value);
+            } else {
+                alert('項目を選択してください！');
+            }
         });
-
-        $('#vote-takenoko').click(function() {
-            $.post('/vote', { choice: 'takenoko' }, function(data) {
-                updateBars(data);
-            });
-        });
-        </script>
+     </script>
+    
     </div>
 
     <!-- チャット機能 -->
@@ -108,10 +131,10 @@
         const takenokoPercentage = total ? (data.takenoko / total) * 100 : 50;
 
         document.querySelector('#kinoko-bar').style.width = kinokoPercentage + '%';
-        document.querySelector('#kinoko-bar').textContent = `愛: ${data.kinoko}票`;
+        document.querySelector('#kinoko-bar').textContent = `きのこ: ${data.kinoko}票`;
 
         document.querySelector('#takenoko-bar').style.width = takenokoPercentage + '%';
-        document.querySelector('#takenoko-bar').textContent = `金: ${data.takenoko}票`;
+        document.querySelector('#takenoko-bar').textContent = `たけのこ: ${data.takenoko}票`;
       }
     };
 

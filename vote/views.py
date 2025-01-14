@@ -22,22 +22,36 @@ def room(request):
 
 
 
-@csrf_exempt  # 必要に応じてCSRFトークンを無効化（デバッグ用）
+@csrf_exempt
 def vote(request):
     if request.method == 'POST':
         try:
-            data = json.loads(request.body)  # リクエストボディをJSONとして読み込む
-            item = data.get('item')  # 'item'を取得
+            data = json.loads(request.body)
+            item = data.get('item')
 
             if item not in ['kinoko', 'takenoko']:
                 return JsonResponse({'error': '無効な選択肢です。'}, status=400)
 
-            # ここでデータベースに投票を保存するロジックを追加
-            print(f"選択されたアイテム: {item}")
+            # 投票結果を仮に保存するロジック
+            # 実際にはデータベースやキャッシュを利用してください
+            if not hasattr(vote, 'results'):
+                vote.results = {'kinoko': 0, 'takenoko': 0}
 
-            return JsonResponse({'message': '投票ありがとうございました！'}, status=200)
+            vote.results[item] += 1
 
+            # 結果を返す
+            total_votes = vote.results['kinoko'] + vote.results['takenoko']
+            kinoko_percentage = (vote.results['kinoko'] / total_votes) * 100 if total_votes > 0 else 0
+            takenoko_percentage = (vote.results['takenoko'] / total_votes) * 100 if total_votes > 0 else 0
+
+            return JsonResponse({
+                'kinoko_votes': vote.results['kinoko'],
+                'takenoko_votes': vote.results['takenoko'],
+                'kinoko': kinoko_percentage,
+                'takenoko': takenoko_percentage
+            })
         except json.JSONDecodeError:
             return JsonResponse({'error': '不正なデータ形式です。'}, status=400)
     else:
         return JsonResponse({'error': 'POSTメソッドを使用してください。'}, status=405)
+
