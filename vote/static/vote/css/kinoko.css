@@ -24,6 +24,7 @@ body {
 .header h1 {
     font-size: 2rem;
     margin-bottom: 10px;
+    color:white;
 }
 
 .header p {
@@ -45,6 +46,7 @@ body {
     margin-bottom: 20px;
     color: #333;
 }
+
 
 .topic {
     margin-bottom: 30px;
