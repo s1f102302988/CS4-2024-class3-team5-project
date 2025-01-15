@@ -11,11 +11,12 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   </head>
   <body>
-    <main class="container topics">
-        <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center header topic ">
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center header topic ">
             <h1>愛 vs お金</h1>
             <p class="lead">どちらに投票しますか？</p>
-        </div>
+    </div>
+    <main class="container topics">
+        
 
         <!-- 投票フォーム -->
         <div class="mx-5 p-3">
@@ -100,6 +101,7 @@
         <div class="text-center mt-4">
             <a href="http://127.0.0.1:8000/" class="btn btn-secondary">ホームに戻る</a>
         </div>
+        <button id="back-to-top" class="back-to-top">▲ トップに戻る</button>
     </main>
 
     <!-- WebSocketスクリプト -->
@@ -146,6 +148,22 @@
             document.querySelector('#chat-message-input').value = '';
         }
     };
+
+    window.addEventListener('scroll', function () {
+            const backToTop = document.getElementById('back-to-top');
+            if (window.scrollY > 100) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
 </body>
 </html>

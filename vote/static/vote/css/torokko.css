@@ -66,3 +66,21 @@ input[type=text] {
     box-sizing: border-box;
 }
 
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.back-to-top:hover {
+    background-color: #4CAF50;
+}
