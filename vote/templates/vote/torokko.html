@@ -23,14 +23,18 @@
             {% csrf_token %}
             <div class="form-group">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="item" id="item_kinoko" value="kinoko">
-                    <label class="form-check-label" for="item_kinoko">トロッコを切り替えずに5人を見殺し &#x1F622;&#x1F622;&#x1F622;&#x1F622;&#x1F622;</label>
+                  <input class="form-check-input" type="radio" name="item" id="item_option1" value="option1">
+                  <label class="form-check-label" for="item_option1">
+                      トロッコを切り替えずに5人を見殺し &#x1F622;&#x1F622;&#x1F622;&#x1F622;&#x1F622;
+                  </label>
                 </div>
             </div>
             <div class="form-group mb-3">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="item" id="item_takenoko" value="takenoko">
-                    <label class="form-check-label" for="item_takenoko">トロッコを切り替えて一人を殺す &#x1F622;</label>
+                  <input class="form-check-input" type="radio" name="item" id="item_option2" value="option2">
+                  <label class="form-check-label" for="item_option2">
+                      トロッコを切り替えて一人を殺す &#x1F622;
+                  </label>
                 </div>
             </div>
             <button type="button" id="vote-button" class="btn btn-primary">投票</button>
@@ -50,7 +54,7 @@
         function sendVote(item) {
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            fetch('/vote/', {
+            fetch('/vote/torokko/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

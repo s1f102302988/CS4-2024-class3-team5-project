@@ -13,6 +13,14 @@ voteButton.onclick = function () {
   }
 };
 
+fetch('/vote/loveormoney/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ item: 'kinoko' }),
+});
+
 // サーバーからメッセージを受け取った時の処理
 chatSocket.onmessage = function (e) {
   const data = JSON.parse(e.data);

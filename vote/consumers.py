@@ -2,40 +2,12 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from channels.generic.websocket import WebsocketConsumer
 
-class VoteConsumer(AsyncWebsocketConsumer):
-    votes = {'kinoko': 0, 'takenoko': 0}
-
-    async def connect(self):
-        self.group_name = 'vote_group'
-        await self.channel_layer.group_add(self.group_name, self.channel_name)
-        await self.accept()
-
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.group_name, self.channel_name)
-
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        message = data.get('message')
-
-        if message in self.votes:
-            self.votes[message] += 1
-
-        await self.channel_layer.group_send(
-            self.group_name,
-            {
-                'type': 'send_vote_data',
-                'kinoko': self.votes['kinoko'],
-                'takenoko': self.votes['takenoko'],
-            }
-        )
-    async def send_vote_data(self, event):
-        await self.send(text_data=json.dumps({
-            'kinoko': event['kinoko'],
-            'takenoko': event['takenoko'],
-        }))
 
 class KinokoTakenokoConsumer(AsyncWebsocketConsumer):
-    votes = {"kinoko": 0, "takenoko": 0}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.votes = {"kinoko": 0, "takenoko": 0}
 
     async def connect(self):
         await self.accept()
@@ -56,7 +28,10 @@ class KinokoTakenokoConsumer(AsyncWebsocketConsumer):
 
 # 愛 vs お金
 class LoveOrMoneyConsumer(AsyncWebsocketConsumer):
-    votes = {"love": 0, "money": 0}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.votes = {"love": 0, "money": 0}
 
     async def connect(self):
         await self.accept()
@@ -77,7 +52,10 @@ class LoveOrMoneyConsumer(AsyncWebsocketConsumer):
 
 # トロッコ問題
 class TorokkoConsumer(AsyncWebsocketConsumer):
-    votes = {"option1": 0, "option2": 0}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.votes = {"option1": 0, "option2": 0}
 
     async def connect(self):
         await self.accept()

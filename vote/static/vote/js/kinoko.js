@@ -14,7 +14,7 @@ voteButton.onclick = function () {
   }
 };
 
-fetch('/vote/', {
+fetch('/vote/kinokotakenoko/', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
