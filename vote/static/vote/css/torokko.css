@@ -55,3 +55,14 @@ body {
     margin-bottom: 10px;
     color: #555;
 }
+.vote-bar {
+    height: 30px;
+}
+.hoge {
+    overflow: hidden;
+}
+input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+}
+

@@ -1,5 +1,4 @@
 <!doctype html>
-{% load static %}
 <html lang="ja">
   <head>
     {% load static %}
@@ -10,155 +9,143 @@
     <script src="/vote/static/vote/js/moneyorlove.js"></script>
     <link rel="stylesheet" href="{% static 'vote/css/love.css' %}">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <style>
-      .vote-bar {
-        height: 30px;
-      }
-	  .hoge {
-			overflow: hidden;
-		}
-	   input[type=text] {
-			width: 100%;
-			box-sizing: border-box;
-		}
-    </style>
   </head>
   <body>
-<main class="container topics">
-  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center header topic ">
-    <h1>愛 vs お金</h1>
-    <p class="lead">どちらに投票しますか？</p>
-  </div>
-
-  <!-- 投票フォーム -->
-  <div class="mx-5 p-3">
-    <form id="vote-form" class="needs-validation" action="/vote/" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="item" id="item_kinoko" value="kinoko">
-                <label class="form-check-label" for="item_kinoko">愛 &#x1F493;</label>
-            </div>
+    <main class="container topics">
+        <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center header topic ">
+            <h1>愛 vs お金</h1>
+            <p class="lead">どちらに投票しますか？</p>
         </div>
-        <div class="form-group mb-3">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="item" id="item_takenoko" value="takenoko">
-                <label class="form-check-label" for="item_takenoko">金 &#x1F4B0;</label>
-            </div>
+
+        <!-- 投票フォーム -->
+        <div class="mx-5 p-3">
+            <form id="vote-form" class="needs-validation" action="/vote/" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="item" id="item_kinoko" value="kinoko">
+                        <label class="form-check-label" for="item_kinoko">愛 &#x1F493;</label>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="item" id="item_takenoko" value="takenoko">
+                        <label class="form-check-label" for="item_takenoko">金 &#x1F4B0;</label>
+                    </div>
+                </div>
+                <button type="button" id="vote-button" class="btn btn-primary">投票</button>
+            </form>
         </div>
-        <button type="button" id="vote-button" class="btn btn-primary">投票</button>
-    </form>
-</div>
 
-<!-- 投票結果表示 -->
-<div class="mx-5 p-3">
-    <h2>投票結果</h2>
-    <div class="progress mb-3">
-        <div id="kinoko-bar" class="progress-bar bg-success vote-bar" role="progressbar" style="width: 50%">きのこ: 0票</div>
-    </div>
-    <div class="progress">
-        <div id="takenoko-bar" class="progress-bar bg-warning vote-bar" role="progressbar" style="width: 50%">たけのこ: 0票</div>
-    </div>
- <script>
-    function sendVote(item) {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        <!-- 投票結果表示 -->
+        <div class="mx-5 p-3">
+            <h2>投票結果</h2>
+            <div class="progress mb-3">
+                <div id="kinoko-bar" class="progress-bar bg-success vote-bar" role="progressbar" style="width: 50%">きのこ: 0票</div>
+            </div>
+            <div class="progress">
+                <div id="takenoko-bar" class="progress-bar bg-warning vote-bar" role="progressbar" style="width: 50%">たけのこ: 0票</div>
+            </div>
+        <script>
+            function sendVote(item) {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-        fetch('/vote/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken,
-            },
-            body: JSON.stringify({ item: item }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    alert(data.error);
+                fetch('/vote/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: JSON.stringify({ item: item }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            alert(data.error);
+                        } else {
+                            // 投票結果を更新
+                            document.querySelector('#kinoko-bar').style.width = data.kinoko + '%';
+                            document.querySelector('#kinoko-bar').textContent = `愛: ${data.kinoko_votes}票`;
+
+                            document.querySelector('#takenoko-bar').style.width = data.takenoko + '%';
+                            document.querySelector('#takenoko-bar').textContent = `金: ${data.takenoko_votes}票`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('エラー:', error);
+                        alert('エラーが発生しました。もう一度お試しください。');
+                    });
+            }
+
+            document.querySelector('#vote-button').addEventListener('click', function () {
+                const selectedItem = document.querySelector('input[name="item"]:checked');
+                if (selectedItem) {
+                    sendVote(selectedItem.value);
                 } else {
-                    // 投票結果を更新
-                    document.querySelector('#kinoko-bar').style.width = data.kinoko + '%';
-                    document.querySelector('#kinoko-bar').textContent = `愛: ${data.kinoko_votes}票`;
-
-                    document.querySelector('#takenoko-bar').style.width = data.takenoko + '%';
-                    document.querySelector('#takenoko-bar').textContent = `金: ${data.takenoko_votes}票`;
+                    alert('項目を選択してください！');
                 }
-            })
-            .catch(error => {
-                console.error('エラー:', error);
-                alert('エラーが発生しました。もう一度お試しください。');
             });
-    }
+        </script>
 
-    document.querySelector('#vote-button').addEventListener('click', function () {
+        </div>
+
+        <!-- チャット機能 -->
+        <div class="mx-5 p-3 hoge">
+            <h2>チャット</h2>
+            <textarea id="chat-log" cols="41" rows="10"></textarea><br>
+            <input id="chat-message-input" type="text"><br>
+            <input id="chat-message-submit" type="button" value="Send">
+        </div>
+        <div style="clear: both;"></div>
+        <div class="text-center mt-4">
+            <a href="http://127.0.0.1:8000/" class="btn btn-secondary">ホームに戻る</a>
+        </div>
+    </main>
+
+    <!-- WebSocketスクリプト -->
+    <script id="room-name" type="application/json">"loveormoney"</script>
+    <script>
+    // 投票用WebSocket
+    const voteSocket = new WebSocket('ws://localhost:8000/ws/vote/loveormoney/');
+    document.querySelector('#vote-button').onclick = function () {
         const selectedItem = document.querySelector('input[name="item"]:checked');
         if (selectedItem) {
-            sendVote(selectedItem.value);
+            voteSocket.send(JSON.stringify({ 'message': selectedItem.value }));
         } else {
             alert('項目を選択してください！');
         }
-    });
- </script>
-
-</div>
-
-<!-- チャット機能 -->
-<div class="mx-5 p-3 hoge">
-    <h2>チャット</h2>
-    <textarea id="chat-log" cols="41" rows="10"></textarea><br>
-    <input id="chat-message-input" type="text"><br>
-    <input id="chat-message-submit" type="button" value="Send">
-</div>
-<div style="clear: both;"></div>
-<div class="text-center mt-4">
-    <a href="http://127.0.0.1:8000/" class="btn btn-secondary">ホームに戻る</a>
-</div>
-</main>
-
-<!-- WebSocketスクリプト -->
-<script id="room-name" type="application/json">"loveormoney"</script>
-<script>
-// 投票用WebSocket
-const voteSocket = new WebSocket('ws://localhost:8000/ws/vote/loveormoney/');
-document.querySelector('#vote-button').onclick = function () {
-    const selectedItem = document.querySelector('input[name="item"]:checked');
-    if (selectedItem) {
-        voteSocket.send(JSON.stringify({ 'message': selectedItem.value }));
-    } else {
-        alert('項目を選択してください！');
-    }
-};
-voteSocket.onmessage = function (e) {
-  const data = JSON.parse(e.data);
-  if (data.kinoko !== undefined && data.takenoko !== undefined) {
-    const total = data.kinoko + data.takenoko;
-    const kinokoPercentage = total ? (data.kinoko / total) * 100 : 50;
-    const takenokoPercentage = total ? (data.takenoko / total) * 100 : 50;
-
-    document.querySelector('#kinoko-bar').style.width = kinokoPercentage + '%';
-    document.querySelector('#kinoko-bar').textContent = `愛: ${data.kinoko}票`;
-
-    document.querySelector('#takenoko-bar').style.width = takenokoPercentage + '%';
-    document.querySelector('#takenoko-bar').textContent = `金: ${data.takenoko}票`;
-  }
-};
-
-// チャット用WebSocket
-const chatSocket = new WebSocket('ws://localhost:8000/ws/vote/loveormoney/');
-chatSocket.onmessage = function (e) {
+    };
+    voteSocket.onmessage = function (e) {
     const data = JSON.parse(e.data);
-    document.querySelector('#chat-log').value += (data.message + '\n');
-};
-chatSocket.onclose = function () {
-    console.error('Chat socket closed unexpectedly');
-};
-document.querySelector('#chat-message-submit').onclick = function () {
-    const message = document.querySelector('#chat-message-input').value.trim();
-    if (message) {
-        chatSocket.send(JSON.stringify({ 'message': message }));
-        document.querySelector('#chat-message-input').value = '';
+    if (data.kinoko !== undefined && data.takenoko !== undefined) {
+        const total = data.kinoko + data.takenoko;
+        const kinokoPercentage = total ? (data.kinoko / total) * 100 : 50;
+        const takenokoPercentage = total ? (data.takenoko / total) * 100 : 50;
+
+        document.querySelector('#kinoko-bar').style.width = kinokoPercentage + '%';
+        document.querySelector('#kinoko-bar').textContent = `愛: ${data.kinoko}票`;
+
+        document.querySelector('#takenoko-bar').style.width = takenokoPercentage + '%';
+        document.querySelector('#takenoko-bar').textContent = `金: ${data.takenoko}票`;
     }
-};
-</script>
+    };
+
+    // チャット用WebSocket
+    const chatSocket = new WebSocket('ws://localhost:8000/ws/vote/loveormoney/');
+    chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        document.querySelector('#chat-log').value += (data.message + '\n');
+    };
+    chatSocket.onclose = function () {
+        console.error('Chat socket closed unexpectedly');
+    };
+    document.querySelector('#chat-message-submit').onclick = function () {
+        const message = document.querySelector('#chat-message-input').value.trim();
+        if (message) {
+            chatSocket.send(JSON.stringify({ 'message': message }));
+            document.querySelector('#chat-message-input').value = '';
+        }
+    };
+    </script>
 </body>
 </html>
