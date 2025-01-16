@@ -12,11 +12,12 @@
 
     </head>
     <body>
-        <main class="container topics" >
+        <main class="container" >
         <div class="header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center topic">
             <h1>きのこ vs たけのこ</h1>
             <p class="lead">どちらに投票しますか？</p>
         </div>
+        <div class="topics">
 
             <!-- 投票フォーム -->
             <div class="mx-5 p-3">
@@ -91,7 +92,7 @@
             </div>
 
             <!-- チャット機能 -->
-            <div class="mx-5 p-3">
+            <div class="mx-5 p-3 hoge">
                 <h2>チャット</h2>
                 <textarea id="chat-log" cols="51" rows="10"></textarea><br>
                 <input id="chat-message-input" type="text"><br>
@@ -102,6 +103,7 @@
                 <a href="http://127.0.0.1:8000/" class="btn btn-secondary">ホームに戻る</a>
             </div>
             <button id="back-to-top" class="back-to-top">▲ トップに戻る</button>
+        </div>
         </main>
 
         <!-- WebSocketスクリプト -->

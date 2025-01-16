@@ -11,11 +11,12 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   </head>
   <body>
+    <main class="container" >
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center header topic ">
             <h1>愛 vs お金</h1>
             <p class="lead">どちらに投票しますか？</p>
     </div>
-    <main class="container topics">
+    <div class="topics">
         
 
         <!-- 投票フォーム -->
@@ -93,7 +94,7 @@
         <!-- チャット機能 -->
         <div class="mx-5 p-3 hoge">
             <h2>チャット</h2>
-            <textarea id="chat-log" cols="41" rows="10"></textarea><br>
+            <textarea id="chat-log" cols="51" rows="10"></textarea><br>
             <input id="chat-message-input" type="text"><br>
             <input id="chat-message-submit" type="button" value="Send">
         </div>
@@ -102,6 +103,7 @@
             <a href="http://127.0.0.1:8000/" class="btn btn-secondary">ホームに戻る</a>
         </div>
         <button id="back-to-top" class="back-to-top">▲ トップに戻る</button>
+    </div>
     </main>
 
     <!-- WebSocketスクリプト -->
